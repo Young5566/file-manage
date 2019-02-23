@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.swing.filechooser.FileSystemView;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -196,5 +199,19 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e){
             throw  new YoungException(ResultEnum.ERROR, "下载失败");
         }
+    }
+
+    /**
+     * 获取全部文件（分页）
+     * @param page 请求页数
+     * @return 文件信息
+     * @throws Exception 异常
+     */
+    @Override
+    public Map getAllFile(Integer page) throws Exception {
+        Map resultMap = new HashMap();
+        resultMap.put("files", fileMapper.getAllFile(10, (page - 1)*10));
+        resultMap.put("count", fileMapper.getFilesCount());
+        return resultMap;
     }
 }

@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author: Young
  * @QQ: 403353323
  * @Date: 2019/1/17 20:32
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/file")
 public class FileController {
@@ -77,5 +80,10 @@ public class FileController {
     @GetMapping("/{uuid}")
     public Result getByUuid(@PathVariable("uuid") String uuid) throws Exception{
         return new Result<>(fileService.getByUuid(uuid));
+    }
+
+    @GetMapping("/getAll")
+    public Result getAll(@NotNull(message = "请输入页数") Integer page) throws Exception {
+        return new Result<>(fileService.getAllFile(page));
     }
 }

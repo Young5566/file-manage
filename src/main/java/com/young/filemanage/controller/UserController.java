@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
  * @Date: 2019/1/16 9:32
  */
 
+@CrossOrigin
 @RestController
 @Validated
 @RequestMapping(value = "/user")

@@ -3,6 +3,9 @@ package com.young.filemanage.service;
 import com.young.filemanage.entity.File;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Author: Young
  * @QQ: 403353323
@@ -14,4 +17,5 @@ public interface FileService {
     public int deleteFile(String uuid, String uploader) throws Exception;
     public int updateFile(File file) throws Exception;
     public int downloadFile(String uuid) throws Exception;
+    public Map getAllFile(Integer page) throws Exception;
 }

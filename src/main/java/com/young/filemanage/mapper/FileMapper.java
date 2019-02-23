@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Young
@@ -39,4 +40,9 @@ public interface FileMapper {
     @UpdateProvider(type = FileSqlProvider.class, method = "getFileUpdateSql")
     public int updateFile(File file) throws SQLException;
 
+    @Select("select * from files limit #{pageSize} offset #{offset}")
+    public List<File> getAllFile(@Param("pageSize") Integer pageSize, @Param("offset") Integer offset) throws SQLException;
+
+    @Select("select count(*) from files")
+    public int getFilesCount() throws SQLException;
 }
