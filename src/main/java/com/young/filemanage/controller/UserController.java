@@ -81,11 +81,11 @@ public class UserController {
      * @throws Exception 异常
      */
     @DeleteMapping("/delete/{username}")
-    public Result deleteUser(@PathVariable("username") String username) throws Exception {
-        return new Result<>(userService.deleteUser(username));
-    }
+     public Result deleteUser(@PathVariable("username") String username) throws Exception {
+     return new Result<>(userService.deleteUser(username));
+     }
 
-    /**
+     /**
      * 登陆
      * @param user 登陆信息
      * @param bindingResult 参数验证，错误时返回的结果

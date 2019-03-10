@@ -13,6 +13,7 @@ import java.util.List;
  * @Date: 2019/1/17 16:54
  */
 
+@Mapper
 public interface FileMapper {
 
     /**

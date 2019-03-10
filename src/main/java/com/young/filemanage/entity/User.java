@@ -13,11 +13,9 @@ import javax.validation.constraints.NotBlank;
 public class User {
     private String uuid;
 
-    @NotBlank(message = "用户名不可为空")
     @NotNull(message = "用户名不可为空")
     private String username;
 
-    @NotBlank(message = "密码不可为空")
     @NotNull(message = "密码不可为空")
     private String password;
 

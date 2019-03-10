@@ -29,7 +29,7 @@ public class FileController {
      * @return 返回文件信息
      * @throws Exception 异常
      */
-    @PostMapping("/upload/{uploader}")
+    @PostMapping("/{uploader}/upload")
     public Result uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("uploader") String uploader) throws Exception{
         String contentType = file.getContentType();   //图片文件类型
         String fileName = file.getOriginalFilename();  //图片名字
@@ -66,7 +66,7 @@ public class FileController {
      * @return 返回是否删除成功
      * @throws Exception 异常
      */
-    @DeleteMapping("/delete/{uploader}/{uuid}")
+    @DeleteMapping("/{uploader}/delete/{uuid}")
     public Result deleteFile(@PathVariable("uploader") String uploader, @PathVariable("uuid") String uuid) throws Exception {
         return new Result<>(fileService.deleteFile(uuid, uploader));
     }

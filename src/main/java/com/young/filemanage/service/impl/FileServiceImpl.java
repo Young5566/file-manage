@@ -15,16 +15,13 @@ import org.csource.fastdfs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.filechooser.FileSystemView;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.*;
+import java.util.*;
 
 /**
  * @Author: Young
@@ -41,13 +38,21 @@ public class FileServiceImpl implements FileService {
     private UserMapper userMapper;
 
     // 获取配置文件路径
-    private static final String conf_filename = System.getProperty("user.dir") + "\\src\\main\\resources\\fastdfs_client.conf";
+
+//    private static final String conf_filename = System.getProperty("user.dir") + "\\src\\main\\resources\\fastdfs_client.conf";
     private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+    private static String storageIp = null;
     private static StorageClient storageClient = null;
+    private static Properties props = new Properties();
 
     // 获取storageClient
     static {
         try {
+            String conf_filename = new ClassPathResource("fastdfs_client.conf").getFile().getAbsolutePath();
+            InputStream in = new BufferedInputStream(new FileInputStream(conf_filename));
+            props.load(in);
+            String value = props.getProperty("tracker_server");
+            storageIp = value.split(":")[0];
             ClientGlobal.init(conf_filename);
             // 连接
             TrackerClient trackerClient = new TrackerClient();
@@ -82,6 +87,7 @@ public class FileServiceImpl implements FileService {
                 new NameValuePair("name", fileName),
                 new NameValuePair("type", contentType.split("/")[0])
         };
+        System.out.println();
         // 上传得到 groupName, remoteFileId
         String[] fileIds = storageClient.upload_appender_file(files, contentType.split("/")[1], nvp);
         // 得到文件的信息
@@ -92,9 +98,9 @@ public class FileServiceImpl implements FileService {
         file.setName(fileName);
         file.setGroupName(fileIds[0]);
         file.setRemoteFileId(fileIds[1]);
-        file.setStorageIp(fileInfo.getSourceIpAddr());
+        file.setStorageIp(storageIp);
         file.setSize(fileInfo.getFileSize());
-        String fileUrl = "http://" + fileInfo.getSourceIpAddr() + "/" + fileIds[0] + "/" + fileIds[1];
+        String fileUrl = "http://" + storageIp + "/" + fileIds[0] + "/" + fileIds[1];
         file.setFileUrl(fileUrl);
         file.setCreateTime(fileInfo.getCreateTimestamp());
         file.setType(contentType);
